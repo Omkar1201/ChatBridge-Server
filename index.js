@@ -7,7 +7,8 @@ const cookieParser = require('cookie-parser');
 app.use(cors({ origin: `${process.env.CLIENT_URL}`, credentials: true }));
 
 app.use(cookieParser());
-app.use(express.json())
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
 const userRoute = require('./routes/userRoute');
 const messageRoute=require('./routes/messageRoute')

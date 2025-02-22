@@ -40,4 +40,25 @@ const logOut = (req, res) => {
     }
 }
 
-module.exports = { getOtherUsers, logOut }
+const editUserProfile = async (req, res) => {
+    try {
+        const { fullName, username, email, profilePhoto, bio } = req.body
+        
+        const userId = req.user.userId
+        const updatedUserData = await User.findByIdAndUpdate(userId, { fullName, username, email, profilePhoto, bio }, { new: true })
+
+        return res.status(200).json({
+            success: true,
+            updatedUserData,
+            message: "Profile updated successfully!"
+        })
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+module.exports = { getOtherUsers, logOut, editUserProfile }

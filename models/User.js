@@ -25,6 +25,10 @@ const userSchema=new mongoose.Schema(
         lastSeen:{
             type:Date,
             default:null
+        },
+        bio:{
+            type:String,
+            default:"Message only"
         }
     },{timestamps:true}
 )
