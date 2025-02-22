@@ -46,10 +46,11 @@ const editUserProfile = async (req, res) => {
         
         const userId = req.user.userId
         const updatedUserData = await User.findByIdAndUpdate(userId, { fullName, username, email, profilePhoto, bio }, { new: true })
+        const { password, ...dataWithoutPassword } = updatedUserData;
 
         return res.status(200).json({
             success: true,
-            updatedUserData,
+            updatedUserData:dataWithoutPassword,
             message: "Profile updated successfully!"
         })
     }

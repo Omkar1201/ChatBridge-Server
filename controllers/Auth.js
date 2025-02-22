@@ -33,11 +33,10 @@ const signup = async (req, res) => {
         const userData = await User.create({ fullName, username, email, password: hashedpassword })
         return res.status(201).json({
             success: true,
-            message: 'Sign up successful'
+            message: 'Sign up successfull!'
         })
     }
     catch (err) {
-        console.log(`Error occured - ${err}`);
         return res.status(500).json({
             success: false,
             message: err.message
