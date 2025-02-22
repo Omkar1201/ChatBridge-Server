@@ -30,19 +30,7 @@ const signup = async (req, res) => {
             })
         }
 
-        const nameParts = fullName.trim().split(/\s+/);
-
-        let firstName, lastName;
-        if (nameParts.length === 1) {
-            firstName = fullName[0] || "";
-            lastName = fullName[1] || "";
-        } else {
-            firstName = nameParts.shift();
-            lastName = nameParts.join(" ");
-        }
-        const profilePhoto=`https://avatar.iran.liara.run/username?username=${firstName}+${lastName}`;
-
-        const userData = await User.create({ fullName, username, email, password: hashedpassword,profilePhoto })
+        const userData = await User.create({ fullName, username, email, password: hashedpassword })
         return res.status(201).json({
             success: true,
             message: 'Sign up successful'
