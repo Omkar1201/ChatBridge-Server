@@ -14,7 +14,7 @@ const signup = async (req, res) => {
         if (isUserPresent) {
             return res.status(409).json({
                 success: false,
-                message: 'User is already present'
+                message: 'User exist, Try another Username'
             })
         }
 
