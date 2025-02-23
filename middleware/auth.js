@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
         if (!token || token === 'null') {
             return res.status(401).json({
                 success: false,
-                message: 'Token not found'
+                message: 'Please Login, Token not Found'
             })
         }
         else {

@@ -51,7 +51,7 @@ const login = async (req, res) => {
         if (!userData) {
             return res.status(404).json({
                 success: false,
-                message: 'user not found'
+                message: 'User not found'
             })
         }
 
@@ -82,14 +82,14 @@ const login = async (req, res) => {
                 fullName:userData.fullName,
                 profilePhoto:userData.profilePhoto,
                 bio:userData.bio,
-                message: `Login successfull ( Hi ${userData.username})`
+                message: `Login successfull (Hi ${userData.username})`
             })
         }
         else {
 
             return res.status(401).json({
                 success: false,
-                message: 'password did not match'
+                message: 'Password does not match'
             })
         }
     }

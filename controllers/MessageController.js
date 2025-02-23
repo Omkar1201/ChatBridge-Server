@@ -64,13 +64,15 @@ const getMessage = async (req, res) => {
         if (!conversation) {
             return res.status(200).json({
                 success: true,
-                message: [],
+                messages: [],
+                message:"Conversation Not Found"
             })
         }
 
         return res.status(200).json({
             success: true,
-            message: conversation.messages
+            messages: conversation.messages,
+            message:"Conversation Retrived!"
         })
     }
     catch (error) {
