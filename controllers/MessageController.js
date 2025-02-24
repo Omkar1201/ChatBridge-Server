@@ -32,7 +32,7 @@ const sendMessage = async (req, res) => {
         // Socket io
         const receiverSocketId = getReceiverSocketId(receiverId);
         if (receiverSocketId) {
-            io.to(receiverSocketId).emit("newMessage", gotConversation);
+            io.to(receiverSocketId).emit("newOrUpdatedConversation", gotConversation);
         }
 
         return res.status(201).json({
@@ -86,7 +86,7 @@ const getMessage = async (req, res) => {
         })
     }
 }
-const getAllMessages = async (req, res) => {
+const getAllConversations = async (req, res) => {
     try {
         const { userId } = req.user;
         const conversations = await Conversation.find({ participants: userId }).populate('messages');
@@ -150,4 +150,4 @@ const editMessage = async (req, res) => {
         });
     }
 };
-module.exports = { sendMessage, getMessage, editMessage, getAllMessages }
+module.exports = { sendMessage, getMessage, editMessage, getAllConversations }

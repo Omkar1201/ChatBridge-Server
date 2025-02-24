@@ -73,15 +73,13 @@ const login = async (req, res) => {
                 maxAge: 1000 * 60 * 60 * 24 * 30
             }
 
+            const userWithoutPassword = userData.toObject();
+            delete userWithoutPassword.password;
+
             return res.cookie('authToken', token, options).status(200).json({
                 success: true,
                 token,
-                email: userData.email,
-                user_id: userData._id,
-                username: userData.username,
-                fullName:userData.fullName,
-                profilePhoto:userData.profilePhoto,
-                bio:userData.bio,
+                userData:userWithoutPassword,
                 message: `Login successfull (Hi ${userData.username})`
             })
         }
