@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const signup = async (req, res) => {
     try {
-        const { fullName, username, email, password } = req.body
+        let { fullName, username, email, password } = req.body
         if (!username || !email || !password || !fullName) {
             return res.status(400).json({ message: "All fields are required" })
         }
-
+        fullName=fullName.trim(), username=username.trim(), email=email.trim(), password=password.trim() 
         const isUserPresent = await User.findOne({ username })
         // Check is user already present
         if (isUserPresent) {
@@ -45,8 +45,15 @@ const signup = async (req, res) => {
 }
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body
+        let { username, password } = req.body
 
+        if (!username || !password) {
+            return res.status(400).json({ success: false, message: 'Username and password are required' });
+        }
+    
+        username=username.trim()
+        password=password.trim()
+        
         const userData = await User.findOne({ username })
         if (!userData) {
             return res.status(404).json({
