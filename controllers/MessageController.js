@@ -155,7 +155,7 @@ const editMessage = async (req, res) => {
 
 const translateMessage = async (req, res) => {
     try {
-        const { message } = req.body;
+        const { message,targetLanguage } = req.body;
 
         if (!message || typeof message !== 'string' || message.trim() === '') {
             throw new Error("Translation failed, No text received.");
@@ -180,7 +180,7 @@ const translateMessage = async (req, res) => {
 
         const sourceLang = detectResponse.data.source_lang_code;
         
-        const targetLang = sourceLang === 'en' ? 'mr' : 'en';
+        const targetLang = sourceLang === 'en' ? targetLanguage : 'en';
         
         const translateOptions = {
             method: 'POST',

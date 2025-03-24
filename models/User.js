@@ -29,6 +29,10 @@ const userSchema=new mongoose.Schema(
         bio:{
             type:String,
             default:"Message only"
+        },
+        translateMessageTo:{
+            type:String,
+            default:"hi"
         }
     },{timestamps:true}
 )
