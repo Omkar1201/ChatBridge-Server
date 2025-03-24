@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
     if (userId != undefined) {
         userSocketMap[userId] = socket.id;
     }
-
+    
     io.emit('getOnlineUsers', Object.keys(userSocketMap));
 
     socket.on('disconnect', async () => {

@@ -99,7 +99,6 @@ const login = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(`Error occured - ${err.message}`);
         return res.status(500).json({
             success: false,
             message: err.message

@@ -8,7 +8,6 @@ const auth = async (req, res, next) => {
                 (req.cookies? req.cookies.authToken : null)
             );
         
-        // console.log(token);
         if (!token || token === 'null') {
             return res.status(401).json({
                 success: false,

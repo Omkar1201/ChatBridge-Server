@@ -1,6 +1,8 @@
 const Conversation = require('../models/Conversation')
 const Message = require('../models/Message')
 const { io, getReceiverSocketId } = require('../socket/socket')
+const axios = require('axios')
+require('dotenv').config();
 
 const sendMessage = async (req, res) => {
     try {
@@ -150,4 +152,70 @@ const editMessage = async (req, res) => {
         });
     }
 };
-module.exports = { sendMessage, getMessage, editMessage, getAllConversations }
+
+const translateMessage = async (req, res) => {
+    try {
+        const { message } = req.body;
+
+        if (!message || typeof message !== 'string' || message.trim() === '') {
+            throw new Error("Translation failed, No text received.");
+        }
+
+        const detectOptions = {
+            method: 'POST',
+            url: 'https://google-translate113.p.rapidapi.com/api/v1/translator/detect-language',
+            headers: {
+                'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+                'x-rapidapi-host': 'google-translate113.p.rapidapi.com',
+                'Content-Type': 'application/json',
+            },
+            data: { text: message }
+        };
+
+        const detectResponse = await axios.request(detectOptions);
+
+        if (!detectResponse.data || !detectResponse.data.source_lang_code) {
+            throw new Error("Unable to detect source language.");
+        }
+
+        const sourceLang = detectResponse.data.source_lang_code;
+        
+        const targetLang = sourceLang === 'en' ? 'mr' : 'en';
+        
+        const translateOptions = {
+            method: 'POST',
+            url: 'https://google-translate113.p.rapidapi.com/api/v1/translator/text',
+            headers: {
+                'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+                'x-rapidapi-host': 'google-translate113.p.rapidapi.com',
+                'Content-Type': 'application/json'
+            },
+            data: {
+                from: sourceLang,
+                to: targetLang,
+                text: message
+            }
+        };
+
+        const translationResponse = await axios.request(translateOptions);
+
+        if (!translationResponse.data || !translationResponse.data.trans) {
+            throw new Error("Translation failed. No translated text received.");
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Message translated successfully.",
+            translatedMessage: translationResponse.data.trans
+        });
+
+    } catch (error) {
+            return res.status(500).json({
+            success: false,
+            message: `${error?.response?.data?.message || error.message}`
+        });
+    }
+};
+
+
+module.exports = { sendMessage, getMessage, editMessage, getAllConversations, translateMessage }
