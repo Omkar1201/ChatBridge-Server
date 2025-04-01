@@ -138,10 +138,14 @@ const editMessage = async (req, res) => {
         messageData.isEdited = true;
         await messageData.save();
 
+        const getUpdatedConversation = await Conversation.findOne({
+            messages: { $in: [messageId] }
+        }).populate("messages");
+
         return res.status(200).json({
             success: true,
             message: "Message updated successfully",
-            updatedMessage: messageData
+            updatedConversation: getUpdatedConversation
         });
 
     } catch (error) {
@@ -155,7 +159,7 @@ const editMessage = async (req, res) => {
 
 const translateMessage = async (req, res) => {
     try {
-        const { message,targetLanguage } = req.body;
+        const { message, targetLanguage } = req.body;
 
         if (!message || typeof message !== 'string' || message.trim() === '') {
             throw new Error("Translation failed, No text received.");
@@ -179,9 +183,9 @@ const translateMessage = async (req, res) => {
         }
 
         const sourceLang = detectResponse.data.source_lang_code;
-        
+
         const targetLang = sourceLang === 'en' ? targetLanguage : 'en';
-        
+
         const translateOptions = {
             method: 'POST',
             url: 'https://google-translate113.p.rapidapi.com/api/v1/translator/text',
@@ -210,7 +214,7 @@ const translateMessage = async (req, res) => {
         });
 
     } catch (error) {
-            return res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: `${error?.response?.data?.message || error.message}`
         });
