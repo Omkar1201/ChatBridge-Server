@@ -3,7 +3,17 @@ const jwt = require("jsonwebtoken");
 
 const authenticateSocket = (socket, next) => {
     try {
-        const token = socket.handshake.headers['authorization']?.split(' ')[1] || socket.handshake.auth?.token || socket.handshake.headers.cookie.replace("authToken=", "");
+        const getTokenFromCookie = (cookieString) => {
+            if (!cookieString) return null;
+            const match = cookieString.match(/authToken=([^;]+)/);
+            return match ? match[1] : null;
+        };
+
+        const token =
+            socket.handshake.headers?.authorization?.split(' ')[1] ||
+            socket.handshake.auth?.token ||
+            getTokenFromCookie(socket.handshake.headers?.cookie) ||
+            null;
 
         if (!token) {
             return next(new Error("Authentication token not found"));
