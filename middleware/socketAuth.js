@@ -14,6 +14,7 @@ const authenticateSocket = (socket, next) => {
             socket.handshake.auth?.token ||
             getTokenFromCookie(socket.handshake.headers?.cookie) ||
             null;
+        console.log("token from authSocket", token);
 
         if (!token) {
             return next(new Error("Authentication token not found"));
