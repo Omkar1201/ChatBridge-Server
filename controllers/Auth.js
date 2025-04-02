@@ -74,9 +74,9 @@ const login = async (req, res) => {
 
             const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' })
             const options = {
-                httpOnly: true,         // Prevents JavaScript access
+                httpOnly: true,         
                 secure: process.env.ENVIRONMENT === 'PRODUCTION' ? true : false,          //  Must be false for localhost (HTTPS required for true)
-                sameSite: "None",        // Lax mode for cross-origin on same-site
+                sameSite: process.env.ENVIRONMENT === 'PRODUCTION' ? "None" : "Lax",       
                 maxAge: 1000 * 60 * 60 * 24 * 30
             }
 

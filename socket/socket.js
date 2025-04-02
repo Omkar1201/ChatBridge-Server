@@ -25,7 +25,7 @@ io.use(authenticateSocket);
 
 io.on("connection", (socket) => {
 
-    console.log(`Socket id: ${socket.id} with userId: ${socket.userId}`);
+    // console.log(`Socket id: ${socket.id} with userId: ${socket.userId}`);
     const userId = socket.userId;
     if (userId != undefined) {
         userSocketMap[userId] = socket.id;
@@ -47,14 +47,10 @@ io.on("connection", (socket) => {
         }
         io.emit('lastseen', { userId: socket.userId, lastSeen });
 
-        console.log(`User ${socket.userId} disconnected at ${lastSeen}`);
+        // console.log(`User ${socket.userId} disconnected at ${lastSeen}`);
 
     })
 
-    // socket.on("sendMessage", (data) => {
-    // console.log(`Message received: ${data.message} from userId: ${socket.userId}`);
-    // socket.broadcast.emit("receiveMessage", data);
-    // });
 });
 
 
